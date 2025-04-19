@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace HairPros.Core.Enums
 {
-    public enum Role
-    {
-        Admin =1,
-        Barber,
-        Customer
+    public enum UserRole { 
+        Admin = 1,
+        Barber=2,
+        Customer=3
     }
 }

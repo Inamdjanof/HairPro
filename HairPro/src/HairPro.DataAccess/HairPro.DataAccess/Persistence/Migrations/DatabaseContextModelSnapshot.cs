@@ -54,22 +54,48 @@ namespace HairPro.DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("0a058d79-380d-4661-a97c-df1a2ef76bb6"),
+                            Id = new Guid("c8ffbf24-cd35-4195-bedc-1fbe34342eef"),
                             Name = "Admin",
                             RoleType = 1
                         },
                         new
                         {
-                            Id = new Guid("047e5cbd-ffcc-46bf-b32a-215676c2015d"),
+                            Id = new Guid("46197967-019d-4770-9bfc-dceef1e046e1"),
                             Name = "Barber",
                             RoleType = 2
                         },
                         new
                         {
-                            Id = new Guid("ca4d75a5-47d0-4c0a-a564-f4c16240e0ea"),
+                            Id = new Guid("09c23d26-0727-4595-a3be-775a68704bd9"),
                             Name = "Customer",
                             RoleType = 3
                         });
+                });
+
+            modelBuilder.Entity("HairPro.Core.Entities.BarberPortfolio", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("BarberId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BarberId");
+
+                    b.ToTable("BarberPortfolios");
                 });
 
             modelBuilder.Entity("HairPro.Core.Entities.OtpCode", b =>
@@ -82,11 +108,17 @@ namespace HairPro.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<DateTime>("ExpiryTime")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<bool>("IsUsed")
-                        .HasColumnType("boolean");
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
@@ -94,6 +126,28 @@ namespace HairPro.DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("OtpCodes");
+                });
+
+            modelBuilder.Entity("HairPros.Core.Entities.AllService", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Services");
                 });
 
             modelBuilder.Entity("HairPros.Core.Entities.Barber", b =>
@@ -111,19 +165,10 @@ namespace HairPro.DataAccess.Migrations
                     b.Property<Guid>("BarberShopId")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<DateTime>("CreatedOn")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("UpdatedBy")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<DateTime?>("UpdatedOn")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<Guid>("UserId")
@@ -150,12 +195,7 @@ namespace HairPro.DataAccess.Migrations
                     b.Property<TimeSpan>("CloseTime")
                         .HasColumnType("interval");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<DateTime>("CreatedOn")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<int>("DayOfWeek")
@@ -164,11 +204,7 @@ namespace HairPro.DataAccess.Migrations
                     b.Property<TimeSpan>("OpenTime")
                         .HasColumnType("interval");
 
-                    b.Property<string>("UpdatedBy")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<DateTime?>("UpdatedOn")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp without time zone");
 
                     b.HasKey("Id");
@@ -177,52 +213,6 @@ namespace HairPro.DataAccess.Migrations
                         .IsUnique();
 
                     b.ToTable("BarberHours");
-                });
-
-            modelBuilder.Entity("HairPros.Core.Entities.BarberQueue", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("AddedAt")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<Guid>("BarberId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<Guid>("OrderId")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("QueueNumber")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<DateTime?>("UpdatedOn")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
-
-                    b.HasIndex("BarberId", "OrderId")
-                        .IsUnique();
-
-                    b.ToTable("BarberQueues");
                 });
 
             modelBuilder.Entity("HairPros.Core.Entities.BarberRating", b =>
@@ -238,12 +228,7 @@ namespace HairPro.DataAccess.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<DateTime>("CreatedOn")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<Guid>("CustomerId")
@@ -254,11 +239,7 @@ namespace HairPro.DataAccess.Migrations
                         .HasColumnType("smallint")
                         .HasDefaultValue((short)1);
 
-                    b.Property<string>("UpdatedBy")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<DateTime?>("UpdatedOn")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp without time zone");
 
                     b.HasKey("Id");
@@ -280,12 +261,7 @@ namespace HairPro.DataAccess.Migrations
                     b.Property<Guid>("BarberId")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<DateTime>("CreatedOn")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<decimal>("Price")
@@ -296,11 +272,7 @@ namespace HairPro.DataAccess.Migrations
                     b.Property<Guid>("ServiceId")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("UpdatedBy")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<DateTime?>("UpdatedOn")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp without time zone");
 
                     b.HasKey("Id");
@@ -319,12 +291,7 @@ namespace HairPro.DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<DateTime>("CreatedOn")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("DocumentPath")
@@ -341,14 +308,10 @@ namespace HairPro.DataAccess.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
-                    b.Property<int>("ResponsibleBarberId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("ResponsibleBarberId")
+                        .HasColumnType("uuid");
 
-                    b.Property<string>("UpdatedBy")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<DateTime?>("UpdatedOn")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp without time zone");
 
                     b.HasKey("Id");
@@ -368,12 +331,7 @@ namespace HairPro.DataAccess.Migrations
                     b.Property<TimeSpan>("BookingTime")
                         .HasColumnType("interval");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<DateTime>("CreatedOn")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<bool>("IsConfirmed")
@@ -384,11 +342,7 @@ namespace HairPro.DataAccess.Migrations
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("UpdatedBy")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<DateTime?>("UpdatedOn")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp without time zone");
 
                     b.HasKey("Id");
@@ -406,24 +360,10 @@ namespace HairPro.DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<DateTime>("CreatedOn")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<DateTime?>("UpdatedOn")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<Guid>("UserId")
@@ -455,6 +395,9 @@ namespace HairPro.DataAccess.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
 
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
 
@@ -474,12 +417,7 @@ namespace HairPro.DataAccess.Migrations
                     b.Property<Guid>("BarberId")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<DateTime>("CreatedOn")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<Guid>("CustomerId")
@@ -495,12 +433,7 @@ namespace HairPro.DataAccess.Migrations
                         .HasColumnType("integer")
                         .HasDefaultValue(0);
 
-                    b.Property<string>("UpdatedBy")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<DateTime?>("UpdatedOn")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp without time zone");
 
                     b.HasKey("Id");
@@ -523,18 +456,10 @@ namespace HairPro.DataAccess.Migrations
                         .HasColumnType("integer")
                         .HasDefaultValue(0);
 
-                    b.Property<DateTime>("CreateAt")
+                    b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp without time zone")
                         .HasDefaultValueSql("NOW()");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("timestamp without time zone");
 
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uuid");
@@ -545,12 +470,7 @@ namespace HairPro.DataAccess.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 
-                    b.Property<string>("UpdatedBy")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<DateTime?>("UpdatedOn")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp without time zone");
 
                     b.HasKey("Id");
@@ -558,38 +478,6 @@ namespace HairPro.DataAccess.Migrations
                     b.HasIndex("OrderId");
 
                     b.ToTable("Payments");
-                });
-
-            modelBuilder.Entity("HairPros.Core.Entities.Service", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<string>("UpdatedBy")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<DateTime?>("UpdatedOn")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Services");
                 });
 
             modelBuilder.Entity("HairPros.Core.Entities.User", b =>
@@ -605,12 +493,6 @@ namespace HairPro.DataAccess.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("text");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("timestamp without time zone");
-
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
@@ -621,9 +503,6 @@ namespace HairPro.DataAccess.Migrations
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<bool?>("IsVerified")
-                        .HasColumnType("boolean");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -664,12 +543,6 @@ namespace HairPro.DataAccess.Migrations
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("boolean");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("UpdatedOn")
-                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
@@ -773,25 +646,6 @@ namespace HairPro.DataAccess.Migrations
                         .IsUnique();
 
                     b.ToTable("IdentityUser");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "12345678-1234-1234-1234-123456789abc",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "dce09a6a-6ca9-44d1-9063-4f470343642c",
-                            Email = "Inomjonovakmal0320@gmail.com",
-                            EmailConfirmed = true,
-                            LockoutEnabled = false,
-                            NormalizedEmail = "INOMJONOVAKMAL0320@GMAIL.COM",
-                            NormalizedUserName = "AKMAL_INOMJONOV",
-                            PasswordHash = "AQAAAAIAAYagAAAAEFU978DUOXg/ATh8xNta19TOu0uiugx5rXA1EIkyA7NAmnfKbUny6JHu09BnWpeM2w==",
-                            PhoneNumber = "+998880146661",
-                            PhoneNumberConfirmed = true,
-                            SecurityStamp = "16ead505-7f5a-4299-851d-08a49115b55b",
-                            TwoFactorEnabled = false,
-                            UserName = "Akmal_Inomjonov"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
@@ -873,6 +727,17 @@ namespace HairPro.DataAccess.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("HairPro.Core.Entities.BarberPortfolio", b =>
+                {
+                    b.HasOne("HairPros.Core.Entities.Barber", "Barber")
+                        .WithMany()
+                        .HasForeignKey("BarberId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Barber");
+                });
+
             modelBuilder.Entity("HairPros.Core.Entities.Barber", b =>
                 {
                     b.HasOne("HairPros.Core.Entities.BarberShop", "BarberShop")
@@ -903,25 +768,6 @@ namespace HairPro.DataAccess.Migrations
                     b.Navigation("Barber");
                 });
 
-            modelBuilder.Entity("HairPros.Core.Entities.BarberQueue", b =>
-                {
-                    b.HasOne("HairPros.Core.Entities.Barber", "Barber")
-                        .WithMany()
-                        .HasForeignKey("BarberId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HairPros.Core.Entities.Order", "Order")
-                        .WithMany()
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Barber");
-
-                    b.Navigation("Order");
-                });
-
             modelBuilder.Entity("HairPros.Core.Entities.BarberRating", b =>
                 {
                     b.HasOne("HairPros.Core.Entities.Barber", "Barber")
@@ -949,7 +795,7 @@ namespace HairPro.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HairPros.Core.Entities.Service", "Service")
+                    b.HasOne("HairPros.Core.Entities.AllService", "Service")
                         .WithMany()
                         .HasForeignKey("ServiceId")
                         .OnDelete(DeleteBehavior.Cascade)

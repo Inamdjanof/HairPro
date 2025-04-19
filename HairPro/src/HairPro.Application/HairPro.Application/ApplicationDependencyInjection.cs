@@ -1,43 +1,48 @@
-﻿using HairPro.Application.Common.Email;
+﻿using FluentValidation;
 using HairPro.Application.MappingProfiles;
-using HairPro.Application.Services.Auth;
-using HairPro.Application.Services.Auth.Interfaces;
+using HairPro.Application.Models.User;
+using HairPro.Application.Models.Validators.User;
+using HairPro.Application.Services;
+using HairPro.Application.Services.Impl;
+using HairPro.Core.Entities;
 using HairPro.DataAccess.Persistence;
 using HairPro.Shared.Services.Impl;
 using HairPro.Shared.Services;
 using HairPros.Core.Entities;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using HairPro.Core.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using HairPro.Application.Helpers.GenerateJwt;
+using HairPro.Application.Services.Auth;
 
 namespace HairPro.Application
 {
     public static class ApplicationDependencyInjection
     {
-        public static IServiceCollection AddApplicationServices(this IServiceCollection services)
+        public static IServiceCollection AddApplication(this IServiceCollection services, IWebHostEnvironment env, IConfiguration configuration)
         {
-       
-            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+            services.AddServices(env);
+
             services.RegisterAutoMapper();
-            services.AddScoped<IOtpService,OtpService>();
-            services.AddScoped<ICustomEmailSender, EmailSender>();
-            services.AddScoped<IJwtTokenService, JwtTokenService>();
-            services.AddScoped<IClaimService, ClaimService>();
+
             services.AddIdentityServices();
-            services.AddScoped<RoleManager<ApplicationRole>>();
-          
-          
 
 
             return services;
+        }
+
+        private static void AddServices(this IServiceCollection services, IWebHostEnvironment env)
+        {
+            services.AddScoped<IClaimService, ClaimService>();
+            services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IJwtTokenService, JwtTokenService>();
+
+
+
+
         }
 
 
@@ -48,7 +53,7 @@ namespace HairPro.Application
 
         private static IServiceCollection AddIdentityServices(this IServiceCollection services)
         {
-            services.AddIdentity<User, IdentityRole<Guid>>(options =>
+            services.AddIdentity<User, ApplicationRole>(options =>
             {
                 options.Password.RequireDigit = true;
                 options.Password.RequiredLength = 6;
@@ -58,12 +63,7 @@ namespace HairPro.Application
             .AddEntityFrameworkStores<DatabaseContext>()
             .AddDefaultTokenProviders();
 
-            services.AddScoped<IRoleStore<ApplicationRole>, RoleStore<ApplicationRole, DatabaseContext, Guid>>();
-
-            services.AddScoped<UserManager<User>>();
-            services.AddScoped<RoleManager<ApplicationRole>>();
-            services.AddScoped<SignInManager<User>>();
-
+         
             return services;
         }
 

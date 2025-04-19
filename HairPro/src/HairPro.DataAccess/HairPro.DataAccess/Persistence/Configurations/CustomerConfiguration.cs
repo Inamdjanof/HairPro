@@ -22,11 +22,6 @@ namespace HairPro.DataAccess.Persistence.Configurations
                 .Property(c => c.UserId)
                 .IsRequired();
 
-            // Name - majburiy va maksimal uzunlik belgilandi
-            builder
-                .Property(c => c.Name)
-                .IsRequired()
-                .HasMaxLength(100);
 
             // User bilan bog‘lash
             builder
@@ -35,24 +30,7 @@ namespace HairPro.DataAccess.Persistence.Configurations
                 .HasForeignKey(c => c.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Audit maydonlari
-            builder
-                .Property(c => c.CreatedBy)
-                .HasMaxLength(100)
-                .IsRequired();
-
-            builder
-                .Property(c => c.UpdatedBy)
-                .HasMaxLength(100)
-                .IsRequired(false);
-
-            builder
-                .Property(c => c.CreatedOn)
-                .IsRequired();
-
-            builder
-                .Property(c => c.UpdatedOn)
-                .IsRequired(false);
+         
         }
     }
 

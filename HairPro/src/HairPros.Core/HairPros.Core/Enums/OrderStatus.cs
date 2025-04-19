@@ -11,7 +11,7 @@ namespace HairPros.Core.Enums
         Pending=1,
         WaitingForApproval,
         Cancelled,
-        Completed
-
+        Completed,
+        Confirmed
     }
 }

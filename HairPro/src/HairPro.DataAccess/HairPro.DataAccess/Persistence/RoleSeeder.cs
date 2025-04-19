@@ -15,7 +15,7 @@ namespace HairPro.DataAccess.Persistence
     {
         public static async Task SeedAdminUserAsync(UserManager<User> userManager, RoleManager<ApplicationRole> roleManager)
         {
-            string adminRole = Role.Admin.ToString();  
+            string adminRole = UserRole.Admin.ToString();  
             string adminEmail = "adminhairpro@gmail.com";
             string adminUsername = "adminHairPro";
             string adminPassword = "AdminHairPro_2001";  
@@ -23,11 +23,19 @@ namespace HairPro.DataAccess.Persistence
             // 🟢 Admin rolini yaratamiz, agar mavjud bo‘lmasa
             if (!await roleManager.RoleExistsAsync(adminRole))
             {
-                await roleManager.CreateAsync(new ApplicationRole { Name = adminRole });
+                var role = new ApplicationRole(UserRole.Admin)
+                {
+                    Name = adminRole,
+                    NormalizedName = adminRole.ToUpper()
+                };
+
+                await roleManager.CreateAsync(role);
             }
 
             // 🟢 Admin foydalanuvchisini yaratamiz, agar u mavjud bo‘lmasa
-            if (await userManager.FindByEmailAsync(adminEmail) == null)
+
+            var existingAdmin = await userManager.FindByEmailAsync(adminEmail);
+            if (existingAdmin == null)
             {
                 var admin = new User
                 {
@@ -42,6 +50,7 @@ namespace HairPro.DataAccess.Persistence
                     await userManager.AddToRoleAsync(admin, adminRole);
                 }
             }
+
         }
     }
 

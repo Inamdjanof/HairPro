@@ -14,24 +14,22 @@ namespace HairPro.DataAccess.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<IdentityUser> builder)
         {
-            // Asosiy kalitni o'rnatish
+          
             builder.HasKey(user => user.Id);
 
-            // Email konfiguratsiyasi
+         
             builder.Property(user => user.Email)
                 .HasMaxLength(255)
                 .IsRequired();
 
-            builder.HasIndex(user => user.Email).IsUnique(); // Email unikal bo‘lishi kerak
-
-            // Username konfiguratsiyasi
+            builder.HasIndex(user => user.Email).IsUnique(); 
+         
             builder.Property(user => user.UserName)
                 .HasMaxLength(100)
                 .IsRequired();
 
-            builder.HasIndex(user => user.UserName).IsUnique(); // Username ham unikal bo‘lishi kerak
+            builder.HasIndex(user => user.UserName).IsUnique(); 
 
-            // PasswordHash - majburiy maydon
             builder.Property(user => user.PasswordHash)
                 .IsRequired();
 
@@ -40,29 +38,11 @@ namespace HairPro.DataAccess.Persistence.Configurations
                 .HasMaxLength(20)
                 .IsRequired(false);
 
-            // Dastlabki admin foydalanuvchini yaratish
-            builder.HasData(GenerateAdminUser());
-        }
-
-        private IdentityUser GenerateAdminUser()
-        {
-            var hasher = new PasswordHasher<IdentityUser>();
-            var admin = new IdentityUser
-            {
-                Id =  "12345678-1234-1234-1234-123456789abc",
-                UserName = "Akmal_Inomjonov",
-                Email = "Inomjonovakmal0320@gmail.com",
-                NormalizedEmail = "INOMJONOVAKMAL0320@GMAIL.COM",
-                NormalizedUserName = "AKMAL_INOMJONOV",
-                PhoneNumber = "+998880146661",
-                EmailConfirmed = true,
-                PhoneNumberConfirmed = true,
-                PasswordHash = "AQAAAAIAAYagAAAAEFU978DUOXg/ATh8xNta19TOu0uiugx5rXA1EIkyA7NAmnfKbUny6JHu09BnWpeM2w=="
-
-            };
+           
           
-            return admin;
         }
+
+       
     }
 
 

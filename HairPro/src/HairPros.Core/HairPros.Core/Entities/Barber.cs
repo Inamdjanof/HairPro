@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HairPros.Core.Entities
 {
-    public class Barber : BaseEntity , IAuditedEntity
+    public class Barber : BaseEntity 
     {
         public Guid UserId { get; set; }
         public Guid BarberShopId { get; set; }
@@ -16,10 +16,5 @@ namespace HairPros.Core.Entities
         public User User { get; set; }
         public BarberShop BarberShop { get; set; }
 
-        // Audit maydonlari
-        public string CreatedBy { get; set; }
-        public DateTime CreatedOn { get; set; }
-        public string UpdatedBy { get; set; }
-        public DateTime? UpdatedOn { get; set; }
     }
 }

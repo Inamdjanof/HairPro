@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HairPro.Application.Exceptions
 {
-    internal class BadRequestException
+    public class BadRequestException
     {
     }
 }

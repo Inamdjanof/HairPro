@@ -1,54 +1,53 @@
-﻿using HairPro.Core.Entities;
+﻿using FluentValidation;
+using HairPro.Application;
+using HairPro.Application.Models.User;
+using HairPro.Core.Entities;
 using HairPro.DataAccess;
 using HairPro.DataAccess.Persistence;
-using HairPro.Shared.Services.Impl;
-using HairPro.Shared.Services;
 using HairPros.Core.Entities;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using HairPro.Application.Services.Auth.Interfaces;
-using HairPro.Application.Services.Auth;
-using System.Reflection;
-using HairPro.Application;
-using System.Threading.RateLimiting;
+using Microsoft.OpenApi.Models;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 
-builder.Services.AddDataAccess(builder.Configuration);
-builder.Services.AddApplicationServices();
-
-
-
-builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddControllers();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
 
+    // **To‘g‘ri klass qo‘shildi**
+    c.OperationFilter<FileUploadOperationFilter>();
+});
+builder.Services.AddApplication(builder.Environment, builder.Configuration)
+                .AddDataAccess(builder.Configuration);
 
 var app = builder.Build();
+
 
 
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    var context = services.GetRequiredService<DatabaseContext>();
     var userManager = services.GetRequiredService<UserManager<User>>();
     var roleManager = services.GetRequiredService<RoleManager<ApplicationRole>>();
 
-    await RoleSeeder.SeedAdminUserAsync(userManager,roleManager);
-
-    context.Database.Migrate();
-  
+    await RoleSeeder.SeedAdminUserAsync(userManager, roleManager);
+    await AutomatedMigration.MigrateAsync(scope.ServiceProvider);
 }
-
-
-
 
 app.UseSwagger();
 app.UseSwaggerUI();
 
+app.UseStaticFiles();
+app.UseSwagger();
+app.UseSwaggerUI();
+
 app.UseHttpsRedirection();
-app.UseAuthentication(); // 🔹 Identity Auth qo‘shildi
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

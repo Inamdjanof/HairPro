@@ -27,12 +27,12 @@ namespace HairPro.DataAccess.Persistence.Configurations
                 .Property(n => n.IsRead)
                 .HasDefaultValue(false);
 
-            // CreatedAt - majburiy maydon
+        
             builder
                 .Property(n => n.CreatedAt)
                 .IsRequired();
 
-            // User bilan bog‘lash
+           
             builder
                 .HasOne(n => n.User)
                 .WithMany()

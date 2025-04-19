@@ -19,7 +19,7 @@ namespace HairPro.DataAccess.Persistence.Configurations
             // User bilan bog'lash
             builder
                 .HasOne(b => b.User)
-                .WithMany()  // Agar User o‘zida Barbers kolleksiyasini saqlasa, bu yerda .WithMany(u => u.Barbers) bo‘lishi mumkin.
+                .WithMany()  
                 .HasForeignKey(b => b.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
@@ -36,24 +36,7 @@ namespace HairPro.DataAccess.Persistence.Configurations
                 .HasPrecision(3, 2) // Maksimal 2 ta kasr qismi (masalan: 4.75)
                 .HasDefaultValue(0);
 
-            // Audit maydonlari
-            builder
-                .Property(b => b.CreatedBy)
-                .HasMaxLength(100)
-                .IsRequired();
-
-            builder
-                .Property(b => b.UpdatedBy)
-                .HasMaxLength(100)
-                .IsRequired(false);
-
-            builder
-                .Property(b => b.CreatedOn)
-                .IsRequired();
-
-            builder
-                .Property(b => b.UpdatedOn)
-                .IsRequired(false);
+          
         }
 
 

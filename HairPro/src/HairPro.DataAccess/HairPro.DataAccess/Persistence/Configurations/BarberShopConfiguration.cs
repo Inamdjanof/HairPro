@@ -46,24 +46,7 @@ namespace HairPro.DataAccess.Persistence.Configurations
                 .HasForeignKey(b => b.BarberShopId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Audit maydonlari
-            builder
-                .Property(bs => bs.CreatedBy)
-                .HasMaxLength(100)
-                .IsRequired();
-
-            builder
-                .Property(bs => bs.UpdatedBy)
-                .HasMaxLength(100)
-                .IsRequired(false);
-
-            builder
-                .Property(bs => bs.CreatedOn)
-                .IsRequired();
-
-            builder
-                .Property(bs => bs.UpdatedOn)
-                .IsRequired(false);
+         
         }
     }
 

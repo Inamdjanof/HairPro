@@ -34,7 +34,7 @@ namespace HairPro.DataAccess.Persistence.Configurations
 
             // CreateAt - default vaqt UTC
             builder
-                .Property(p => p.CreateAt)
+                .Property(p => p.CreatedAt)
                 .HasDefaultValueSql("NOW()");
 
             // Order bilan bog‘lash
@@ -44,23 +44,7 @@ namespace HairPro.DataAccess.Persistence.Configurations
                 .HasForeignKey(p => p.OrderId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Audit maydonlari
-            builder
-                .Property(p => p.CreatedBy)
-                .IsRequired()
-                .HasMaxLength(100);
-
-            builder
-                .Property(p => p.CreatedOn)
-                .IsRequired();
-
-            builder
-                .Property(p => p.UpdatedBy)
-                .HasMaxLength(100);
-
-            builder
-                .Property(p => p.UpdatedOn)
-                .IsRequired(false);
+           
         }
     }
 

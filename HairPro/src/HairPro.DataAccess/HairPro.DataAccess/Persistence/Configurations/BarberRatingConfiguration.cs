@@ -44,26 +44,7 @@ namespace HairPro.DataAccess.Persistence.Configurations
                 .HasMaxLength(500)
                 .IsRequired(false);
 
-            // Audit maydonlari
-            builder
-                .Property(br => br.CreatedBy)
-                .HasMaxLength(100)
-                .IsRequired();
-
-            builder
-                .Property(br => br.UpdatedBy)
-                .HasMaxLength(100)
-                .IsRequired(false);
-
-            builder
-                .Property(br => br.CreatedOn)
-                .IsRequired();
-
-            builder
-                .Property(br => br.UpdatedOn)
-                .IsRequired(false);
-
-            // Unikal constraint qo'shish (har bir mijoz har bir sartaroshni faqat bir marta baholay olishi kerak)
+          
             builder
                 .HasIndex(br => new { br.BarberId, br.CustomerId })
                 .IsUnique();

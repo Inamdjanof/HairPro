@@ -1,4 +1,5 @@
-﻿using HairPros.Core.Common;
+﻿using HairPro.Core.Enums;
+using HairPros.Core.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,9 @@ namespace HairPro.Core.Entities
         public Guid UserId { get; set; }
         public string Code { get; set; }
         public DateTime ExpiryTime { get; set; }
-        public bool IsUsed { get; set; } = false;
+        public OtpCodeStatus Status { get; set; }
+     
+      
 
     }
 }

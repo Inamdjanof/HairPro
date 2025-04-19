@@ -15,7 +15,7 @@ namespace HairPro.Core.Entities
 
         public ApplicationRole() : base() { }
 
-        public ApplicationRole(Role role) : base(role.ToString())
+        public ApplicationRole(UserRole role) : base(role.ToString())
         {
             Id = Guid.NewGuid();
             RoleType =(int) role;

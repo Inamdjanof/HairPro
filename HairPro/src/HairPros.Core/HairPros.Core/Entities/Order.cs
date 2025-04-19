@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace HairPros.Core.Entities
 {
-    public class Order : BaseEntity, IAuditedEntity
+    public class Order : BaseEntity
     {
         public Guid CustomerId { get; set; }
         public Guid BarberId { get; set; }
@@ -19,11 +19,6 @@ namespace HairPros.Core.Entities
         public Barber Barber { get; set; }
         public ICollection<Booking> Bookings { get; set; } = new List<Booking>();
 
-
-        public string CreatedBy { get; set; } = string.Empty;
-        public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
-        public string UpdatedBy { get; set; } = string.Empty;
-        public DateTime? UpdatedOn { get; set; }
     }
 
 

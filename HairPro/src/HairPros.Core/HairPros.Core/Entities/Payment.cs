@@ -8,21 +8,13 @@ using System.Threading.Tasks;
 
 namespace HairPros.Core.Entities
 {
-    public class Payment : BaseEntity, IAuditedEntity
+    public class Payment : BaseEntity
     {
         public Guid OrderId { get; set; }
         public int Amount { get; set; }
         public PaymentMethod PaymentMethod { get; set; }
-        public PaymentStatus Status { get; set; }
-        public DateTime CreateAt { get; set; }
-
+        public PaymentStatus Status { get; set; } 
         public Order Order { get; set; }
-        public string CreatedBy { get; set; } = string.Empty;
-        public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
-        public string UpdatedBy { get; set; } = string.Empty;
-        public DateTime? UpdatedOn { get; set; }
-
-
-
+      
     }
 }
